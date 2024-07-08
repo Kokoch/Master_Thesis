@@ -1,0 +1,12 @@
+metrics:
+  - name: "Timeframe"
+    need: "2020,2021"
+
+  - name: "Location"
+    need: "Luxembourg"
+
+  - name: "Label"
+    need: 'lake'
+
+  - name: "Spectral-Bands"
+    need: "red,green"

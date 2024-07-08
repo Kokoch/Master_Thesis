@@ -1,0 +1,24 @@
+Dataset Name,Timeframe,Location,Label,Spectral-Bands,Open-Availability,Usage-Defined,Metadata-Completeness,Average Satisfaction,Rank
+EuroSat_MS,0,100,100,100,100,100,100,75.0,1
+EuroSat_RGB,0,100,100,100,100,100,100,75.0,2
+BigEarthNet,0,100,0,100,100,100,100,50.0,3
+NWPU-RESISC45,0,0,100,100,100,100,80,50.0,4
+Sen-2 LULC Dataset,50,0,0,100,100,100,100,37.5,5
+ReforestTree,50,0,0,100,100,100,90,37.5,6
+NAIP Trees,50,0,0,100,100,100,90,37.5,7
+SEN12MS (triplet),0,0,0,100,100,100,100,25.0,8
+SEN1-2,0,0,0,100,100,100,100,25.0,9
+Brazilian Cerrado-Savanna Scenes Dataset,0,0,0,100,100,100,90,25.0,10
+BioMasster,0,0,0,100,100,100,90,25.0,11
+DryForest,0,0,0,100,100,100,90,25.0,12
+UC Merced dataset (UCMD),0,0,0,100,100,100,80,25.0,13
+RSC11,0,0,0,100,100,100,80,25.0,14
+SAT-4,0,0,0,100,100,100,80,25.0,15
+SAT-6,0,0,0,100,100,100,80,25.0,16
+PatternNet,0,0,0,100,100,100,80,25.0,17
+aerial image dataset (AID),0,0,0,100,100,100,80,25.0,18
+DeepGlobe 2018,0,0,0,100,100,100,80,25.0,19
+WHU-RS19,0,0,0,100,100,100,70,25.0,20
+Forest Change,100,0,0,0,100,100,60,25.0,21
+RSSCN7,0,0,100,0,100,100,40,25.0,22
+RSI-CB,0,0,0,0,100,100,70,0.0,23
