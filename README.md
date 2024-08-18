@@ -1,5 +1,4 @@
-# Master Thesis: Assessing the Quality of Image Datasets in Representing Ecosystem Resilience
-
+# Selecting Quality Image Datasets for Ecosystem Resilience Analysis
 Welcome to the repository for my thesis project on assessing the quality of image datasets used to study ecosystem resilience. This thesis aims to develop an approach for evaluating the quality image datasets based on metrics defined by various stakeholders.
 
 ## Repository Structure
