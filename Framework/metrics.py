@@ -3,7 +3,8 @@ from tqdm import tqdm
 import time
 
 class Metrics:
-    def __init__(self):
+    def __init__(self): 
+        # Initialises the Metrics class with a dictionary of metric functions and an empty list for the metrics to be evaluated
         self.metric_functions = {
             "Minimum-Number-of-Images": self.evaluate_minimum_number_of_images,
             "Minimum-Image-Coverage": self.evaluate_minimum_image_coverage,
@@ -21,12 +22,13 @@ class Metrics:
         }
         self.metrics_eval = []
 
+     # Adds a new metric and its evaluation function to the metric_functions dictionary and returns the updated dictionary
     def add_metric(self, metric_name:str,eval_func):
         self.metric_functions[metric_name]=eval_func
         print(f"New metric '{metric_name}' added.\n")
         return self.metric_functions
 
-
+    # Sets the 'requirement' for a specific metric. If the metric already exists in metrics_eval, it updates it
     def set_metric(self,metric_name,need):
         for key in self.metric_functions:
             if metric_name.lower() == key.lower():
@@ -35,6 +37,7 @@ class Metrics:
                         metric[1] = str(need)
                         print(f"Metric '{metric_name}' set with need: '{need}'.\n")
                         return self.metrics_eval
+                # If it doesn't exist, it adds a new entry to the metrics_eval list
                 self.metrics_eval.append([key,str(need)])
                 print(f"Metric '{metric_name}' set with need: '{need}'.\n")
                 return self.metrics_eval      
@@ -43,12 +46,13 @@ class Metrics:
         print('No metric set because your metric doesn\'t exist\n')            
         return self.metrics_eval
 
-
+    # Displays a progress bar using tqdm for a duration
     def progress_bar(self, duration):
         number_of_steps = 10
         for _ in tqdm(range(number_of_steps), desc="Processing"):
             time.sleep(duration / number_of_steps)
 
+    # Loads input metrics from a YAML file, verifies them, and sets them in the class
     def load_input_metrics_from_yaml(self, yaml_file):
         try:
             with open(yaml_file, 'r') as file:
@@ -71,6 +75,7 @@ class Metrics:
         except Exception as e:
             print(f"An error occurred: {e}")
 
+    # Checks if the input metrics are valid and matches them with available metric functions.
     def check_input_metrics(self):
         for metric, need in self.input_metrics.items():
             if metric in self.metric_functions:
@@ -83,6 +88,7 @@ class Metrics:
                     self.metrics_eval.append([metric, need])
         return self.metrics_eval
 
+    # Evaluates the timeframe metric by comparing needed years with dataset years and returns a satisfaction percentage
     def evaluate_timeframe(self, need, datasets:dict):
         output = []
         needed_years = set(map(int, need.replace(" ", "").split(',')))
@@ -93,6 +99,7 @@ class Metrics:
             output.append([dataset_name, int(satisfaction_percentage)])
         return output
 
+    # Evaluates the revisit time metric, returning a percentage based on how close the dataset's revisit time is to the requiement
     def evaluate_revisit_time(self, need, datasets:dict):
         output = []
         for dataset_name, dataset in datasets.items():
@@ -101,6 +108,7 @@ class Metrics:
             output.append([dataset_name, score])
         return output
 
+    # Evaluates the location metric, comparing required locations with dataset locations, and returns a satisfaction score
     def evaluate_location(self, need, datasets:dict):
         output = []
         needed_locations = set(need.lower().replace(", ", ",").split(","))
@@ -110,6 +118,7 @@ class Metrics:
             output.append([dataset_name, score])
         return output
 
+    # Evaluates the pixel scaling metric, returning a percentage based on the spatial resolutions of the datasets
     def evaluate_pixel_scaling(self, need, datasets:dict):
         output = []
         thresholds = {'low': 30, 'medium': (5, 30), 'high': 5}
@@ -122,6 +131,7 @@ class Metrics:
             output.append([dataset_name, avg_score])
         return output
 
+    # Helper function to calculate the pixel scaling score based on resolution and thresholds
     def calculate_pixel_scaling_score(self, need, thresholds, spatial_resolutions):
         score = 0
         for resolution in spatial_resolutions:
@@ -132,6 +142,7 @@ class Metrics:
                 break
         return score
 
+    # Evaluates the minimum image coverage metric, comparing image coverage with the needed value
     def evaluate_minimum_image_coverage(self, need, datasets:dict):
         output = []
         for dataset_name, dataset in datasets.items():
@@ -140,6 +151,7 @@ class Metrics:
             output.append([dataset_name, score])
         return output
 
+    # Evaluates the spectral bands metric by comparing the required bands with the dataset's available bands
     def evaluate_spectral_bands(self, need, datasets:dict):
         output = []
         needed_bands = set(need.lower().replace(", ", ",").split(","))
@@ -149,6 +161,7 @@ class Metrics:
             output.append([dataset_name, score])
         return output
 
+    # Evaluates the image dimension metric by comparing needed dimensions with the dataset's pixel sizes
     def evaluate_image_dimension(self, need, datasets:dict):
         output = []
         needed_dimensions = [tuple(map(int, n.replace(" ", "").split('x'))) if 'x' in n else (int(n.replace(" ", "")), int(n.replace(" ", ""))) for n in need.split(',')]
@@ -159,6 +172,7 @@ class Metrics:
             output.append([dataset_name, avg_score])
         return output
 
+    # Helper function to calculate the image dimension score percentage
     def calculate_dimension_score(self, dimension, needed_dimensions):
         width, height = dimension
         for needed_width, needed_height in needed_dimensions:
@@ -166,6 +180,7 @@ class Metrics:
                 return 100
         return 0
 
+    # Evaluates the minimum number of images metric by comparing the number of images in a dataset with the required minimum
     def evaluate_minimum_number_of_images(self, need, datasets:dict):
         output = []
         for dataset_name, dataset in datasets.items():
@@ -174,13 +189,15 @@ class Metrics:
             output.append([dataset_name, score])
         return output
 
+    # Evaluates the open availability metric, assigning a score based on whether the dataset is freely available
     def evaluate_open_availability(self, datasets:dict):
         output = []
         for dataset_name, dataset in datasets.items():
             score = 100 if dataset.get("Open-Availability", "").lower() == "free" else 0
             output.append([dataset_name, score])
         return output
-
+    
+    # Evaluates the usage-defined metric, assigning a percentage based on whether the dataset has a defined use
     def evaluate_usage_defined(self, datasets:dict):
         output = []
         for dataset_name, dataset in datasets.items():
@@ -188,6 +205,7 @@ class Metrics:
             output.append([dataset_name, score])
         return output
 
+    # Evaluates the metadata completeness metric by checking the presence of required fields in the dataset
     def evaluate_metadata_completeness(self, datasets:dict):
         required_fields = ["Use", "CoverYear", "Localisation", "Revisit-Time", "ImageCoverage", "NbImage", "Spatial Resolution (m)", "Spectral Resolution", "PixelSize", "Open-Availability"]
         output = []
@@ -198,6 +216,7 @@ class Metrics:
             output.append([dataset_name, int(score)])
         return output
 
+    # Evaluates the NDVI metric by checking if the dataset contains the necessary spectral bands for NDVI calculation
     def evaluate_ndvi(self, datasets:dict):
         output = []
         ndvi_relevant_bands = "Red, NIR"
@@ -208,6 +227,7 @@ class Metrics:
             output.append([dataset_name, ndvi_score])
         return output
     
+    # Evaluates the presence of 3D point cloud data in the datasets
     def evaluate_point_cloud_data(self,datasets:dict):
         output = []
         for dataset_name, dataset in datasets.items():
@@ -220,6 +240,7 @@ class Metrics:
             output.append([dataset_name, int(score)])
         return output
 
+    # Evaluates the presence of forest label data in the datasets
     def evaluate_forest_label(self,datasets:dict):
         output = []
         for dataset_name, dataset in datasets.items():
@@ -232,6 +253,7 @@ class Metrics:
             output.append([dataset_name, int(score)])
         return output
 
+    # Evaluates the forest area metric, which is a composite metric involving several other evaluations.
     def evaluate_area(self, datasets:dict):
         output = []
         high_resolution_results = self.evaluate_pixel_scaling('High', datasets)
