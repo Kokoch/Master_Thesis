@@ -1,9 +1,12 @@
 from framework import *
 class CLI():
+
+    # Initialises the CLI class by creating an instance of the Framework class
     def __init__(self):
         self.framework = Framework()
 
     def run(self):
+        # Main method to run the CLI. It sequentially calls methods to load datasets, set metrics, evaluate them, and report results
         self.__load_datasets_from_yaml()
         datasets = self.__add_dataset()
         if not datasets:
@@ -21,6 +24,7 @@ class CLI():
                 print("\nNow proceeding to the reporting of the results.")
                 self.__reporting(data, path)
 
+    # Method for reporting the results. It asks the user for the number of top datasets to show and displays the report
     def __reporting(self, data, csv_file):
         try:
             n = int(input("Show the top n datasets with n integer: n = "))
@@ -29,6 +33,7 @@ class CLI():
             print(f"Invalid input: {e}. Please enter a valid integer.")
             self.__reporting(data, csv_file)  
 
+    # Method to create a CSV file from the evaluated metrics. The user is asked whether they want to export the results 
     def __create_csv_from_metrics(self,data):
         create_csv = input('Would you like to export the results in a csv file ? (y/n)  --->  ').lower()
         if create_csv == "y":
@@ -39,14 +44,15 @@ class CLI():
             return None
         else:
             print("Invalid input, please try again.\n")
-            self.__load_input_metrics_from_yaml()
+            self.__create_csv_from_metrics(data)  # Call the method again if input is invalid.
 
-
+    # Method to evaluate the metrics against the loaded datasets
     def __evaluate_metric(self):
         print("\nNow proceeding to the evaluation of the metrics set for the loaded datasets.")
         data = self.framework.evaluate_metrics()
         return data    
-            
+
+    # Method to load input metrics from a YAML file. The user is asked if they want to load metrics from a file       
     def __load_input_metrics_from_yaml(self):
         metrics_from_yaml = input('\nWould you like to import metrics from yaml file ? (y/n)  --->  ').lower()
         if metrics_from_yaml == "y":
@@ -55,14 +61,14 @@ class CLI():
             if self.framework.metrics_eval:
                 return self.framework.metrics_eval
             else: 
-                self.__load_input_metrics_from_yaml()
+                self.__load_input_metrics_from_yaml() # If loading fails, prompt the user again
         elif metrics_from_yaml == "n":
             return self.framework.metrics_eval
         else:
             print("Invalid input, please try again.\n")
-            self.__load_input_metrics_from_yaml()
+            self.__load_input_metrics_from_yaml() # Call the method again if input is invalid
 
-
+    # Method to set the metrics manually. The user is asked if they want to set metrics manually or skip
     def __set_metrics(self):
         set_metric = input('Would you like to set the metrics manually? (y/n)  --->  ').lower()
         if set_metric == "y":
@@ -90,8 +96,9 @@ class CLI():
             return self.framework.metrics_eval
         else:
             print("Invalid input, please try again.\n")
-            self.set_metrics()
+            self.__set_metrics() # Call the method again if input is invalid
 
+    # Method to load datasets from a YAML file. The user is asked if they want to load datasets from a file.
     def __load_datasets_from_yaml(self):
         dataset_from_yaml = input('\nWould you like to import datasets from yaml file ? (y/n)  --->  ').lower()
         if dataset_from_yaml == "y":
@@ -100,13 +107,14 @@ class CLI():
             if self.framework.datasets_dict:
                 return self.framework.datasets_dict
             else: 
-                self.__load_datasets_from_yaml()
+                self.__load_datasets_from_yaml() # If loading fails, prompt the user again
         elif dataset_from_yaml == "n":
             return self.framework.datasets_dict
         else:
             print("Invalid input, please try again.\n")
             self.__load_datasets_from_yaml()
 
+    # Method to add datasets manually. The user is asked if they want to add datasets manually.
     def __add_dataset(self):
         add_dataset = input('Would you like to add a dataset manually? (y/n)  --->  ').lower()
         while True:
@@ -143,7 +151,7 @@ class CLI():
                         collected_data[key] = response.lower() if response.lower() == 'true' else 'false'
                     else:
                         collected_data[key] = response if response else ""
-
+                # Add the dataset to the framework
                 self.framework.datasets_dict = self.framework.datasets.add_dataset(**collected_data)
                 continue_adding = input('\nWould you like to add another dataset? (y/n)  --->  ').lower()
                 while continue_adding != 'y':
