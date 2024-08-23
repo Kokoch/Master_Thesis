@@ -19,3 +19,7 @@ The repository is organized into three main folders:
 3. **Case Study**:
     - Contains the code for running the case study.
     - Includes YAML files for importing metrics and loading datasets.
+  
+4. **Proof Of Concept**:
+    - Contains the code for running the proof of conep.
+    - Includes YAML files for importing metrics and loading datasets.
