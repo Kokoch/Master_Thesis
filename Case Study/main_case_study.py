@@ -27,13 +27,23 @@ def evaluate_label(need: str, datasets: dict) -> list:
 
 
 if __name__ == "__main__":
+    # Create an instance of the Framework class
     framework = Framework()
+
+    # Load datasets from a YAML file
     framework.load_datasets_from_yaml('./datasets.yaml')
 
+    # Add a custom metric called 'Label' using the evaluate_label function
     framework.add_metric('Label', evaluate_label)
+
+    # Load input metrics from another YAML file
     framework.load_input_metrics_from_yaml('./metrics.yaml')
-    
+
+    # Evaluate the loaded datasets against the loaded metrics
     data = framework.evaluate_metrics()
 
+    # Create a CSV file from the evaluation results and save it as 'output.csv'
     framework.create_csv_from_metrics('./output.csv',data)
+
+    # Generate a report showing the top 3 datasets based on the evaluation and save the report to 'output.csv'
     output = framework.report(3,'./output.csv',data)
