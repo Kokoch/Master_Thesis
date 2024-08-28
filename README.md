@@ -21,5 +21,5 @@ The repository is organized into three main folders:
     - Includes YAML files for importing metrics and loading datasets.
   
 4. **Proof Of Concept**:
-    - Contains the code for running the proof of conep.
+    - Contains the code for running the proof of concept.
     - Includes YAML files for importing metrics and loading datasets.
